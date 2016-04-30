@@ -18,4 +18,15 @@ hist(X, freq = F, main = "Exponential from inverse transformation")
 hist(Y, freq = F, main = "Exponential distribution using rexp()")
 
 
-# Ex 3 (Excercise 2.2): Generating Logistic and Cauchy distribution
+# Ex 3 (Excercise 2.2): Generating Logistic distribution with inverse 
+#                       transform
+Nsim = 10^4
+U    = runif(Nsim)
+X    = -log(1.0/U-1)
+Y    = rlogis(Nsim)
+par(mfrow = c(1,2))
+hist(X, freq = F, main = "Logistic from inverse transformation")
+hist(Y, freq = F, main = "Logistic distribution using rlogis()")
+
+
+
