@@ -34,7 +34,10 @@ hist(Y, freq = F, main = "Logistic distribution using rlogis()")
 
 #---------------------------------- Normal distribution & CLT ---------------------------------
 
-norm.clt <- function(){
+# Ex 4: Using CLT for simulating standard normal 
+#       distribution
+norm.clt <- function()
+{
 	# Generate approximation of normal distribution using
 	# Central Limit Theorem
 	U    = runif(12) - 0.5
@@ -49,9 +52,47 @@ par(mfrow = c(1,2))
 hist(X, freq = F, main = "Normal distribution simulation using CLT")
 hist(Y, freq = F, main = "R function for normal distribution simulation") 
 
+# ? In excercise is is said to compare tails of distributions, but they do seem similar
+
 
 #------------------------------------- Accept - Reject Method -------------------------------
 
+# Ex 5: Generate beta random variable using uniform 
+#       distribution as proposal
+rbeta.uniform <- function(nsim, alpha, beta)
+{
+	# select tight bound by finding maximum of beta dist with given parameters
+	Max = optimize(f = function(x){dbeta(x,alpha,beta)}, interval = c(0,1), maximum = TRUE)$objective
+	bound = 1/Max
+	
+	sample  = rep(0,times = nsim)
+	accepts = 0
+	while(accepts != nsim){
+		
+			# define proposal distribution as uniform
+	        U.proposal = runif(1)
+	
+	        # generate uniform distribution for accept-reject
+	        U.accept   = runif(1)
+	        
+	        if (U.accept <= bound * dbeta(U.proposal,alpha,beta))
+	        {
+	        	sample[accepts+1] = U.proposal
+	        	accepts  = accepts + 1
+	        } 
+	        
+	}
+    return(sample)
+}
+
+Nsim  = 10000
+alpha = 2  # shape parameters
+beta  = 3
+X     = rbeta(Nsim,alpha,beta)
+y     = rbeta.uniform(Nsim,alpha,beta)
+par(mfrow = c(1,2))
+hist(X, freq = F, main = "Beta distribution using R function")
+hist(y, freq = F, main = "Beta distribution through accept-reject procedure") 
 
 
 
